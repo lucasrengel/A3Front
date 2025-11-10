@@ -34,3 +34,14 @@ export interface ItemListaPreco {
   unidade: string;
   nomeCategoria: string;
 }
+
+export interface RelatorioBalanco {
+  itens: ItemBalanco[];
+  valorTotalEstoque: number;
+}
+
+export interface ItemBalanco {
+  nome: string;
+  quantidade: number;
+  valorTotal: number;
+}
