@@ -53,3 +53,8 @@ export const getProduto = async (id: number): Promise<Produto> => {
   const response = await api.get<Produto>(`/produtos/${id}`);
   return response.data;
 };
+
+export const addProduto = async (produto: Produto): Promise<ApiResponse<Produto>> => {
+  const response = await api.post<ApiResponse<Produto>>('/produtos', produto);
+  return response.data;
+};
