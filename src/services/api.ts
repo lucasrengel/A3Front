@@ -19,6 +19,26 @@ const api = axios.create({
   },
 });
 
+export const getCategorias = async (): Promise<Categoria[]> => {
+  const response = await api.get<Categoria[]>('/categorias');
+  return response.data;
+};
+
+export const getCategoria = async (id: number): Promise<Categoria> => {
+  const response = await api.get<Categoria>(`/categorias/${id}`);
+  return response.data;
+};
+
+export const addCategoria = async (categoria: Categoria): Promise<ApiResponse<Categoria>> => {
+  const response = await api.post<ApiResponse<Categoria>>('/categorias', categoria);
+  return response.data;
+};
+
+export const updateCategoria = async (id: number, categoria: Categoria): Promise<ApiResponse<Categoria>> => {
+  const response = await api.put<ApiResponse<Categoria>>(`/categorias/${id}`, categoria);
+  return response.data;
+};
+
 export const deleteCategoria = async (id: number): Promise<ApiResponse> => {
   const response = await api.delete<ApiResponse>(`/categorias/${id}`);
   return response.data;
