@@ -54,3 +54,15 @@ export interface ItemCategoria {
   nomeCategoria: string;
   quantidade: number;
 }
+
+export interface RelatorioMaioresMovimentacoes {
+  maiorEntrada: Movimentacao | null;
+  maiorSaida: Movimentacao | null;
+}
+
+export interface ApiResponse<T = unknown> {
+  success: boolean;
+  message?: string;
+  error?: string;
+  data?: T;
+}
