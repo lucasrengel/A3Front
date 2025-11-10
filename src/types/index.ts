@@ -45,3 +45,12 @@ export interface ItemBalanco {
   quantidade: number;
   valorTotal: number;
 }
+
+export interface RelatorioProdutosPorCategoria {
+  itens: ItemCategoria[];
+}
+
+export interface ItemCategoria {
+  nomeCategoria: string;
+  quantidade: number;
+}
