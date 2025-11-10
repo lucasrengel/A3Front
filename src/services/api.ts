@@ -28,3 +28,8 @@ export const getProdutos = async (): Promise<Produto[]> => {
   const response = await api.get<Produto[]>('/produtos');
   return response.data;
 };
+
+export const getProduto = async (id: number): Promise<Produto> => {
+  const response = await api.get<Produto>(`/produtos/${id}`);
+  return response.data;
+};
