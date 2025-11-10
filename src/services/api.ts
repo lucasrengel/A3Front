@@ -58,3 +58,8 @@ export const addProduto = async (produto: Produto): Promise<ApiResponse<Produto>
   const response = await api.post<ApiResponse<Produto>>('/produtos', produto);
   return response.data;
 };
+
+export const updateProduto = async (id: number, produto: Produto): Promise<ApiResponse<Produto>> => {
+  const response = await api.put<ApiResponse<Produto>>(`/produtos/${id}`, produto);
+  return response.data;
+};
