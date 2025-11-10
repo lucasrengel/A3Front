@@ -18,3 +18,13 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 });
+
+export const deleteCategoria = async (id: number): Promise<ApiResponse> => {
+  const response = await api.delete<ApiResponse>(`/categorias/${id}`);
+  return response.data;
+};
+
+export const getProdutos = async (): Promise<Produto[]> => {
+  const response = await api.get<Produto[]>('/produtos');
+  return response.data;
+};
