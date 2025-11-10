@@ -15,3 +15,11 @@ export interface Produto {
   quantidadeMaxima: number;
   categoriaId: number;
 }
+
+export interface Movimentacao {
+  id?: number;
+  produtoId: number;
+  data?: string;
+  quantidade: number;
+  tipo: 'ENTRADA' | 'SAIDA';
+}
