@@ -23,3 +23,14 @@ export interface Movimentacao {
   quantidade: number;
   tipo: 'ENTRADA' | 'SAIDA';
 }
+
+export interface RelatorioListaPreco {
+  itens: ItemListaPreco[];
+}
+
+export interface ItemListaPreco {
+  nome: string;
+  preco: number;
+  unidade: string;
+  nomeCategoria: string;
+}
