@@ -73,3 +73,8 @@ export const ajustarPrecos = async (percentual: number): Promise<ApiResponse> =>
   const response = await api.post<ApiResponse>('/produtos/ajustar-precos', { percentual });
   return response.data;
 };
+
+export const getMovimentacoes = async (): Promise<Movimentacao[]> => {
+  const response = await api.get<Movimentacao[]>('/movimentacoes');
+  return response.data;
+};
