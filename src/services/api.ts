@@ -119,3 +119,8 @@ export const getRelatorioPorCategoria = async (): Promise<RelatorioProdutosPorCa
   const response = await api.get<RelatorioProdutosPorCategoria>('/relatorios/por-categoria');
   return response.data;
 };
+
+export const getRelatorioMaioresMovimentacoes = async (): Promise<RelatorioMaioresMovimentacoes> => {
+  const response = await api.get<RelatorioMaioresMovimentacoes>('/relatorios/maiores-movimentacoes');
+  return response.data;
+};
