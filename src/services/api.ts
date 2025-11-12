@@ -63,3 +63,8 @@ export const updateProduto = async (id: number, produto: Produto): Promise<ApiRe
   const response = await api.put<ApiResponse<Produto>>(`/produtos/${id}`, produto);
   return response.data;
 };
+
+export const deleteProduto = async (id: number): Promise<ApiResponse> => {
+  const response = await api.delete<ApiResponse>(`/produtos/${id}`);
+  return response.data;
+};
