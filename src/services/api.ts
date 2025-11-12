@@ -83,3 +83,8 @@ export const getMovimentacao = async (id: number): Promise<Movimentacao> => {
   const response = await api.get<Movimentacao>(`/movimentacoes/${id}`);
   return response.data;
 };
+
+export const addMovimentacao = async (movimentacao: Movimentacao): Promise<ApiResponse> => {
+  const response = await api.post<ApiResponse>('/movimentacoes', movimentacao);
+  return response.data;
+};
