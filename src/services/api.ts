@@ -68,3 +68,8 @@ export const deleteProduto = async (id: number): Promise<ApiResponse> => {
   const response = await api.delete<ApiResponse>(`/produtos/${id}`);
   return response.data;
 };
+
+export const ajustarPrecos = async (percentual: number): Promise<ApiResponse> => {
+  const response = await api.post<ApiResponse>('/produtos/ajustar-precos', { percentual });
+  return response.data;
+};
