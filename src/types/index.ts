@@ -60,6 +60,8 @@ export interface RelatorioMaioresMovimentacoes {
   maiorSaida: Movimentacao | null;
 }
 
+export type RelatorioAbaixoMinimo = Produto[];
+
 export interface ApiResponse<T = unknown> {
   success: boolean;
   message?: string;
