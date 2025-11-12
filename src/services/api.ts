@@ -114,3 +114,8 @@ export const getRelatorioAbaixoMinimo = async (): Promise<RelatorioAbaixoMinimo>
   const response = await api.get<RelatorioAbaixoMinimo>('/relatorios/abaixo-minimo');
   return response.data;
 };
+
+export const getRelatorioPorCategoria = async (): Promise<RelatorioProdutosPorCategoria> => {
+  const response = await api.get<RelatorioProdutosPorCategoria>('/relatorios/por-categoria');
+  return response.data;
+};
