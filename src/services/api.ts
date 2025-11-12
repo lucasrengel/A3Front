@@ -98,3 +98,8 @@ export const deleteMovimentacao = async (id: number): Promise<ApiResponse> => {
   const response = await api.delete<ApiResponse>(`/movimentacoes/${id}`);
   return response.data;
 };
+
+export const getRelatorioListaPrecos = async (): Promise<RelatorioListaPreco> => {
+  const response = await api.get<RelatorioListaPreco>('/relatorios/lista-precos');
+  return response.data;
+};
