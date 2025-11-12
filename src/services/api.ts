@@ -88,3 +88,8 @@ export const addMovimentacao = async (movimentacao: Movimentacao): Promise<ApiRe
   const response = await api.post<ApiResponse>('/movimentacoes', movimentacao);
   return response.data;
 };
+
+export const updateMovimentacao = async (id: number, movimentacao: Movimentacao): Promise<ApiResponse> => {
+  const response = await api.put<ApiResponse>(`/movimentacoes/${id}`, movimentacao);
+  return response.data;
+};
