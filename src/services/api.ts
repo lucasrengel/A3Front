@@ -78,3 +78,8 @@ export const getMovimentacoes = async (): Promise<Movimentacao[]> => {
   const response = await api.get<Movimentacao[]>('/movimentacoes');
   return response.data;
 };
+
+export const getMovimentacao = async (id: number): Promise<Movimentacao> => {
+  const response = await api.get<Movimentacao>(`/movimentacoes/${id}`);
+  return response.data;
+};
