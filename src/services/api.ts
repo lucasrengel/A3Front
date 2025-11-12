@@ -5,6 +5,7 @@ import type {
   Movimentacao, 
   RelatorioListaPreco, 
   RelatorioBalanco, 
+  RelatorioAbaixoMinimo,
   RelatorioProdutosPorCategoria,
   RelatorioMaioresMovimentacoes,
   ApiResponse
@@ -106,5 +107,10 @@ export const getRelatorioListaPrecos = async (): Promise<RelatorioListaPreco> =>
 
 export const getRelatorioBalanco = async (): Promise<RelatorioBalanco> => {
   const response = await api.get<RelatorioBalanco>('/relatorios/balanco');
+  return response.data;
+};
+
+export const getRelatorioAbaixoMinimo = async (): Promise<RelatorioAbaixoMinimo> => {
+  const response = await api.get<RelatorioAbaixoMinimo>('/relatorios/abaixo-minimo');
   return response.data;
 };
