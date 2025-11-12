@@ -103,3 +103,8 @@ export const getRelatorioListaPrecos = async (): Promise<RelatorioListaPreco> =>
   const response = await api.get<RelatorioListaPreco>('/relatorios/lista-precos');
   return response.data;
 };
+
+export const getRelatorioBalanco = async (): Promise<RelatorioBalanco> => {
+  const response = await api.get<RelatorioBalanco>('/relatorios/balanco');
+  return response.data;
+};
