@@ -93,3 +93,8 @@ export const updateMovimentacao = async (id: number, movimentacao: Movimentacao)
   const response = await api.put<ApiResponse>(`/movimentacoes/${id}`, movimentacao);
   return response.data;
 };
+
+export const deleteMovimentacao = async (id: number): Promise<ApiResponse> => {
+  const response = await api.delete<ApiResponse>(`/movimentacoes/${id}`);
+  return response.data;
+};
