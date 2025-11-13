@@ -30,6 +30,57 @@ export default function Categorias() {
       setLoading(false);
     }
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      if (editingCategoria?.id) {
+        await updateCategoria(editingCategoria.id, form);
+        setSuccess('Categoria atualizada com sucesso!');
+      } else {
+        await addCategoria(form);
+        setSuccess('Categoria adicionada com sucesso!');
+      }
+      setShowModal(false);
+      setForm({ nome: '', tamanho: '', embalagem: '' });
+      setEditingCategoria(null);
+      loadCategorias();
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Erro ao salvar categoria');
+    }
+  };
+
+  const handleEdit = (categoria: Categoria) => {
+    setEditingCategoria(categoria);
+    setForm({
+      nome: categoria.nome,
+      tamanho: categoria.tamanho,
+      embalagem: categoria.embalagem
+    });
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('Tem certeza que deseja remover esta categoria?')) return;
+
+    try {
+      setError('');
+      await deleteCategoria(id);
+      setSuccess('Categoria removida com sucesso!');
+      loadCategorias();
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Erro ao remover categoria');
+    }
+  };
+
+  const openNewModal = () => {
+    setEditingCategoria(null);
+    setForm({ nome: '', tamanho: '', embalagem: '' });
+    setShowModal(true);
+  };
   
   return (
     <div>
