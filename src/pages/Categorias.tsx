@@ -14,6 +14,22 @@ export default function Categorias() {
     tamanho: '',
     embalagem: ''
   });
+
+  useEffect(() => {
+    loadCategorias();
+  }, []);
+
+  const loadCategorias = async () => {
+    try {
+      setLoading(true);
+      const data = await getCategorias();
+      setCategorias(data);
+    } catch (err) {
+      setError('Erro ao carregar categorias');
+    } finally {
+      setLoading(false);
+    }
+  };
   
   return (
     <div>
