@@ -3,7 +3,17 @@ import { getCategorias, addCategoria, updateCategoria, deleteCategoria } from '.
 import type { Categoria } from '../types';
 
 export default function Categorias() {
-  // Estados serão adicionados aqui
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [editingCategoria, setEditingCategoria] = useState<Categoria | null>(null);
+  const [form, setForm] = useState<Categoria>({
+    nome: '',
+    tamanho: '',
+    embalagem: ''
+  });
   
   return (
     <div>
