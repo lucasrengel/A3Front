@@ -49,6 +49,93 @@ export default function Produtos() {
     }
   };
 
+  const getNomeCategoria = (categoriaId: number) => {
+    const cat = categorias.find(c => c.id === categoriaId);
+    return cat?.nome || 'N/A';
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      if (editingProduto?.id) {
+        await updateProduto(editingProduto.id, form);
+        setSuccess('Produto atualizado com sucesso!');
+      } else {
+        await addProduto(form);
+        setSuccess('Produto adicionado com sucesso!');
+      }
+      setShowModal(false);
+      resetForm();
+      loadData();
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Erro ao salvar produto');
+    }
+  };
+
+  const handleAjustePrecos = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    try {
+      await ajustarPrecos(percentual);
+      setSuccess(`Preços ajustados em ${percentual}%`);
+      setShowAjusteModal(false);
+      setPercentual(0);
+      loadData();
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Erro ao ajustar preços');
+    }
+  };
+
+  const handleEdit = (produto: Produto) => {
+    setEditingProduto(produto);
+    setForm({
+      nome: produto.nome,
+      precoUnitario: produto.precoUnitario,
+      unidade: produto.unidade,
+      quantidadeEstoque: produto.quantidadeEstoque,
+      quantidadeMinima: produto.quantidadeMinima,
+      quantidadeMaxima: produto.quantidadeMaxima,
+      categoriaId: produto.categoriaId
+    });
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!confirm('Tem certeza que deseja remover este produto?')) return;
+
+    try {
+      setError('');
+      await deleteProduto(id);
+      setSuccess('Produto removido com sucesso!');
+      loadData();
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Erro ao remover produto');
+    }
+  };
+
+  const resetForm = () => {
+    setEditingProduto(null);
+    setForm({
+      nome: '',
+      precoUnitario: 0,
+      unidade: '',
+      quantidadeEstoque: 0,
+      quantidadeMinima: 0,
+      quantidadeMaxima: 0,
+      categoriaId: categorias.length > 0 ? categorias[0].id! : 0
+    });
+  };
+
+  const openNewModal = () => {
+    resetForm();
+    setShowModal(true);
+  };
+
   return (
     <div>
       <h2>Produtos</h2>
