@@ -29,6 +29,26 @@ export default function Produtos() {
     categoriaId: 0
   });
 
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      const [produtosData, categoriasData] = await Promise.all([
+        getProdutos(),
+        getCategorias()
+      ]);
+      setProdutos(produtosData);
+      setCategorias(categoriasData);
+    } catch (err) {
+      setError('Erro ao carregar dados');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       <h2>Produtos</h2>
