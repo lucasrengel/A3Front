@@ -1,11 +1,9 @@
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-
-// Componentes temporários para fazer o roteamento funcionar
-const Home = () => <h2>Dashboard</h2>;
-const Categorias = () => <h2>Categorias</h2>;
-const Produtos = () => <h2>Produtos</h2>;
-const Movimentacoes = () => <h2>Movimentações</h2>;
-const Relatorios = () => <h2>Relatórios</h2>;
+import Home from './pages/Home';
+import Categorias from './pages/Categorias';
+import Produtos from './pages/Produtos';
+import Movimentacoes from './pages/Movimentacoes';
+import Relatorios from './pages/Relatorios';
 
 function App() {
   return (
