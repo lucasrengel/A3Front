@@ -72,16 +72,21 @@ export default function Relatorios() {
   };
 
   const tabs = [
-    { id: 'lista-precos', label: 'Lista de Preços' },
-    { id: 'balanco', label: 'Balanço' },
-    { id: 'abaixo-minimo', label: 'Abaixo do Mínimo' },
-    { id: 'por-categoria', label: 'Por Categoria' },
-    { id: 'maiores-movimentacoes', label: 'Maiores Movimentações' }
+    { id: 'lista-precos', label: '📋 Lista de Preços' },
+    { id: 'balanco', label: '📊 Balanço' },
+    { id: 'abaixo-minimo', label: '⚠️ Abaixo do Mínimo' },
+    { id: 'por-categoria', label: '📁 Por Categoria' },
+    { id: 'maiores-movimentacoes', label: '🔝 Maiores Movimentações' }
   ];
 
   const renderContent = () => {
-    if (loading) return <div>Carregando relatório...</div>;
-    if (error) return <div style={{ color: 'red' }}>{error}</div>;
+    if (loading) {
+      return <div className="loading">Carregando relatório...</div>;
+    }
+
+    if (error) {
+      return <div className="alert alert-danger">{error}</div>;
+    }
 
     switch (activeTab) {
       case 'lista-precos':
@@ -89,7 +94,7 @@ export default function Relatorios() {
           <div>
             <h3>Lista de Preços</h3>
             {listaPrecos?.itens && listaPrecos.itens.length > 0 ? (
-              <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <table>
                 <thead>
                   <tr>
                     <th>Produto</th>
@@ -110,7 +115,7 @@ export default function Relatorios() {
                 </tbody>
               </table>
             ) : (
-              <div>Nenhum produto cadastrado</div>
+              <div className="empty-state">Nenhum produto cadastrado</div>
             )}
           </div>
         );
@@ -121,12 +126,12 @@ export default function Relatorios() {
             <h3>Balanço de Estoque</h3>
             {balanco && (
               <>
-                <div style={{ marginBottom: '1rem', padding: '10px', border: '1px solid #ccc' }}>
+                <div className="stat-card" style={{ marginBottom: '1rem' }}>
                   <h3>R$ {balanco.valorTotalEstoque.toFixed(2)}</h3>
                   <p>Valor Total do Estoque</p>
                 </div>
                 {balanco.itens && balanco.itens.length > 0 ? (
-                  <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <table>
                     <thead>
                       <tr>
                         <th>Produto</th>
@@ -145,7 +150,7 @@ export default function Relatorios() {
                     </tbody>
                   </table>
                 ) : (
-                  <div>Nenhum produto em estoque</div>
+                  <div className="empty-state">Nenhum produto em estoque</div>
                 )}
               </>
             )}
@@ -157,7 +162,7 @@ export default function Relatorios() {
           <div>
             <h3>Produtos Abaixo do Mínimo</h3>
             {abaixoMinimo.length > 0 ? (
-              <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <table>
                 <thead>
                   <tr>
                     <th>Produto</th>
@@ -172,7 +177,7 @@ export default function Relatorios() {
                       <td>{prod.nome}</td>
                       <td>{prod.quantidadeEstoque}</td>
                       <td>{prod.quantidadeMinima}</td>
-                      <td style={{ color: 'red' }}>
+                      <td style={{ color: 'var(--danger)' }}>
                         {prod.quantidadeEstoque - prod.quantidadeMinima}
                       </td>
                     </tr>
@@ -180,7 +185,7 @@ export default function Relatorios() {
                 </tbody>
               </table>
             ) : (
-              <div style={{ color: 'green' }}>
+              <div className="alert alert-success">
                 ✅ Todos os produtos estão acima do estoque mínimo!
               </div>
             )}
@@ -192,7 +197,7 @@ export default function Relatorios() {
           <div>
             <h3>Produtos por Categoria</h3>
             {porCategoria?.itens && porCategoria.itens.length > 0 ? (
-              <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <table>
                 <thead>
                   <tr>
                     <th>Categoria</th>
@@ -209,7 +214,7 @@ export default function Relatorios() {
                 </tbody>
               </table>
             ) : (
-              <div>Nenhuma categoria cadastrada</div>
+              <div className="empty-state">Nenhuma categoria cadastrada</div>
             )}
           </div>
         );
@@ -218,8 +223,8 @@ export default function Relatorios() {
         return (
           <div>
             <h3>Maiores Movimentações</h3>
-            <div style={{ display: 'flex', gap: '20px' }}>
-              <div style={{ flex: 1, padding: '15px', border: '1px solid #ccc', background: '#e6fffa' }}>
+            <div className="stats-grid">
+              <div className="stat-card" style={{ background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)' }}>
                 <h4>📥 Maior Entrada</h4>
                 {maioresMovimentacoes?.maiorEntrada ? (
                   <>
@@ -231,7 +236,7 @@ export default function Relatorios() {
                   <p>Nenhuma entrada registrada</p>
                 )}
               </div>
-              <div style={{ flex: 1, padding: '15px', border: '1px solid #ccc', background: '#fff5f5' }}>
+              <div className="stat-card" style={{ background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)' }}>
                 <h4>📤 Maior Saída</h4>
                 {maioresMovimentacoes?.maiorSaida ? (
                   <>
@@ -253,22 +258,15 @@ export default function Relatorios() {
   };
 
   return (
-    <div>
-      <h2>Relatórios</h2>
+    <div className="card">
+      <h2>📈 Relatórios</h2>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
         {tabs.map((tab) => (
           <button
             key={tab.id}
+            className={`btn ${activeTab === tab.id ? 'btn-primary' : 'btn-secondary'}`}
             onClick={() => setActiveTab(tab.id)}
-            style={{
-              padding: '10px 20px',
-              cursor: 'pointer',
-              backgroundColor: activeTab === tab.id ? '#007bff' : '#f0f0f0',
-              color: activeTab === tab.id ? 'white' : 'black',
-              border: 'none',
-              borderRadius: '4px'
-            }}
           >
             {tab.label}
           </button>

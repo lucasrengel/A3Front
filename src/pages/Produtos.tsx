@@ -138,175 +138,206 @@ export default function Produtos() {
 
   const getEstoqueStatus = (produto: Produto) => {
     if (produto.quantidadeEstoque < produto.quantidadeMinima) {
-      return <span style={{ color: 'red', fontWeight: 'bold' }}>Abaixo do Mínimo</span>;
+      return <span className="badge badge-danger">Abaixo do Mínimo</span>;
     }
     if (produto.quantidadeEstoque > produto.quantidadeMaxima) {
-      return <span style={{ color: 'orange', fontWeight: 'bold' }}>Acima do Máximo</span>;
+      return <span className="badge badge-warning">Acima do Máximo</span>;
     }
-    return <span style={{ color: 'green', fontWeight: 'bold' }}>Normal</span>;
+    return <span className="badge badge-success">Normal</span>;
   };
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) {
+    return <div className="loading">Carregando...</div>;
+  }
 
   return (
-    <div>
-      <h2>Produtos</h2>
+    <div className="card">
+      <h2>📦 Produtos</h2>
 
-      {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-      {success && <div style={{ color: 'green', marginBottom: '10px' }}>{success}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
 
-      <div style={{ marginBottom: '20px' }}>
-        <button onClick={openNewModal} style={{ marginRight: '10px' }}>
+      <div className="btn-group" style={{ marginBottom: '1rem' }}>
+        <button className="btn btn-primary" onClick={openNewModal}>
           + Novo Produto
         </button>
-        <button onClick={() => setShowAjusteModal(true)}>
-          Ajustar Preços
+        <button className="btn btn-info" onClick={() => setShowAjusteModal(true)}>
+          📊 Ajustar Preços
         </button>
       </div>
 
+      {produtos.length === 0 ? (
+        <div className="empty-state">
+          <p>Nenhum produto cadastrado</p>
+        </div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Preço</th>
+              <th>Unidade</th>
+              <th>Estoque</th>
+              <th>Min/Max</th>
+              <th>Categoria</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {produtos.map((prod) => (
+              <tr key={prod.id}>
+                <td>{prod.id}</td>
+                <td>{prod.nome}</td>
+                <td>R$ {prod.precoUnitario.toFixed(2)}</td>
+                <td>{prod.unidade}</td>
+                <td>{prod.quantidadeEstoque}</td>
+                <td>{prod.quantidadeMinima} / {prod.quantidadeMaxima}</td>
+                <td>{getNomeCategoria(prod.categoriaId)}</td>
+                <td>{getEstoqueStatus(prod)}</td>
+                <td>
+                  <div className="btn-group">
+                    <button className="btn btn-warning" onClick={() => handleEdit(prod)}>
+                      Editar
+                    </button>
+                    <button className="btn btn-danger" onClick={() => handleDelete(prod.id!)}>
+                      Remover
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+
       {showModal && (
-        <div style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '20px', background: '#f9f9f9' }}>
-          <h3>{editingProduto ? 'Editar Produto' : 'Novo Produto'}</h3>
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Nome:</label>
-              <input
-                type="text"
-                value={form.nome}
-                onChange={e => setForm({ ...form, nome: e.target.value })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Preço Unitário (R$):</label>
-              <input
-                type="number"
-                step="0.01"
-                value={form.precoUnitario}
-                onChange={e => setForm({ ...form, precoUnitario: parseFloat(e.target.value) || 0 })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Unidade:</label>
-              <input
-                type="text"
-                value={form.unidade}
-                onChange={e => setForm({ ...form, unidade: e.target.value })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Categoria:</label>
-              <select
-                value={form.categoriaId}
-                onChange={e => setForm({ ...form, categoriaId: parseInt(e.target.value) })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              >
-                <option value={0}>Selecione...</option>
-                {categorias.map(cat => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.nome}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Quantidade em Estoque:</label>
-              <input
-                type="number"
-                value={form.quantidadeEstoque}
-                onChange={e => setForm({ ...form, quantidadeEstoque: parseInt(e.target.value) || 0 })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Quantidade Mínima:</label>
-              <input
-                type="number"
-                value={form.quantidadeMinima}
-                onChange={e => setForm({ ...form, quantidadeMinima: parseInt(e.target.value) || 0 })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Quantidade Máxima:</label>
-              <input
-                type="number"
-                value={form.quantidadeMaxima}
-                onChange={e => setForm({ ...form, quantidadeMaxima: parseInt(e.target.value) || 0 })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <button type="submit">Salvar</button>
-            <button type="button" onClick={() => setShowModal(false)} style={{ marginLeft: '10px' }}>Cancelar</button>
-          </form>
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>{editingProduto ? 'Editar Produto' : 'Novo Produto'}</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Nome</label>
+                  <input
+                    type="text"
+                    value={form.nome}
+                    onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Preço Unitário (R$)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={form.precoUnitario}
+                    onChange={(e) => setForm({ ...form, precoUnitario: parseFloat(e.target.value) || 0 })}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Unidade</label>
+                  <input
+                    type="text"
+                    value={form.unidade}
+                    onChange={(e) => setForm({ ...form, unidade: e.target.value })}
+                    placeholder="Ex: UN, KG, L"
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Categoria</label>
+                  <select
+                    value={form.categoriaId}
+                    onChange={(e) => setForm({ ...form, categoriaId: parseInt(e.target.value) })}
+                    required
+                  >
+                    <option value={0}>Selecione...</option>
+                    {categorias.map((cat) => (
+                      <option key={cat.id} value={cat.id}>
+                        {cat.nome}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Quantidade em Estoque</label>
+                  <input
+                    type="number"
+                    value={form.quantidadeEstoque}
+                    onChange={(e) => setForm({ ...form, quantidadeEstoque: parseInt(e.target.value) || 0 })}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Quantidade Mínima</label>
+                  <input
+                    type="number"
+                    value={form.quantidadeMinima}
+                    onChange={(e) => setForm({ ...form, quantidadeMinima: parseInt(e.target.value) || 0 })}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Quantidade Máxima</label>
+                  <input
+                    type="number"
+                    value={form.quantidadeMaxima}
+                    onChange={(e) => setForm({ ...form, quantidadeMaxima: parseInt(e.target.value) || 0 })}
+                    required
+                  />
+                </div>
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Salvar
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
       {showAjusteModal && (
-        <div style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '20px', background: '#f9f9f9' }}>
-          <h3>Ajustar Preços</h3>
-          <form onSubmit={handleAjustePrecos}>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Percentual de Ajuste (%):</label>
-              <input
-                type="number"
-                step="0.01"
-                value={percentual}
-                onChange={e => setPercentual(parseFloat(e.target.value) || 0)}
-                placeholder="Ex: 10 para aumentar 10%, -5 para diminuir 5%"
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-              <small>Use valores positivos para aumentar e negativos para diminuir</small>
-            </div>
-            <button type="submit">Aplicar Ajuste</button>
-            <button type="button" onClick={() => setShowAjusteModal(false)} style={{ marginLeft: '10px' }}>Cancelar</button>
-          </form>
+        <div className="modal-overlay" onClick={() => setShowAjusteModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>Ajustar Preços</h3>
+            <form onSubmit={handleAjustePrecos}>
+              <div className="form-group">
+                <label>Percentual de Ajuste (%)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={percentual}
+                  onChange={(e) => setPercentual(parseFloat(e.target.value) || 0)}
+                  placeholder="Ex: 10 para aumentar 10%, -5 para diminuir 5%"
+                  required
+                />
+                <small style={{ color: 'var(--text-muted)', display: 'block', marginTop: '0.5rem' }}>
+                  Use valores positivos para aumentar e negativos para diminuir
+                </small>
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn" onClick={() => setShowAjusteModal(false)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Aplicar Ajuste
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
-
-      <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Preço</th>
-            <th>Unidade</th>
-            <th>Estoque</th>
-            <th>Min/Max</th>
-            <th>Categoria</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {produtos.map(prod => (
-            <tr key={prod.id}>
-              <td>{prod.id}</td>
-              <td>{prod.nome}</td>
-              <td>R$ {prod.precoUnitario.toFixed(2)}</td>
-              <td>{prod.unidade}</td>
-              <td>{prod.quantidadeEstoque}</td>
-              <td>{prod.quantidadeMinima} / {prod.quantidadeMaxima}</td>
-              <td>{getNomeCategoria(prod.categoriaId)}</td>
-              <td>{getEstoqueStatus(prod)}</td>
-              <td>
-                <button onClick={() => handleEdit(prod)}>Editar</button>
-                <button onClick={() => prod.id && handleDelete(prod.id)} style={{ marginLeft: '5px', color: 'red' }}>Excluir</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }

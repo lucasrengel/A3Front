@@ -44,65 +44,67 @@ export default function Home() {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
+  if (loading) {
+    return <div className="loading">Carregando...</div>;
+  }
 
   if (error) {
     return (
-      <div>
-        <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>
-        <button onClick={loadStats}>Tentar Novamente</button>
+      <div className="card">
+        <div className="alert alert-danger">{error}</div>
+        <button className="btn btn-primary" onClick={loadStats}>
+          Tentar Novamente
+        </button>
       </div>
     );
   }
 
   return (
-    <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '2rem', margin: '0 0 10px 0' }}>{stats.categorias}</h3>
-          <p style={{ margin: 0, color: '#666' }}>Categorias</p>
+    <>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <h3>{stats.categorias}</h3>
+          <p>Categorias</p>
         </div>
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '2rem', margin: '0 0 10px 0' }}>{stats.produtos}</h3>
-          <p style={{ margin: 0, color: '#666' }}>Produtos</p>
+        <div className="stat-card">
+          <h3>{stats.produtos}</h3>
+          <p>Produtos</p>
         </div>
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', textAlign: 'center' }}>
-          <h3 style={{ fontSize: '2rem', margin: '0 0 10px 0' }}>{stats.movimentacoes}</h3>
-          <p style={{ margin: 0, color: '#666' }}>Movimentações</p>
+        <div className="stat-card">
+          <h3>{stats.movimentacoes}</h3>
+          <p>Movimentações</p>
         </div>
-        <div style={{ padding: '20px', border: '1px solid #ccc', borderRadius: '8px', textAlign: 'center', background: '#f0f9ff', borderColor: '#bae6fd' }}>
-          <h3 style={{ fontSize: '2rem', margin: '0 0 10px 0', color: '#0284c7' }}>
-            R$ {stats.valorEstoque.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}
-          </h3>
-          <p style={{ margin: 0, color: '#0284c7' }}>Valor Total em Estoque</p>
+        <div className="stat-card highlight">
+          <h3>R$ {stats.valorEstoque.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</h3>
+          <p>Valor Total em Estoque</p>
         </div>
       </div>
 
-      <div>
+      <div className="card">
         <h2>🚀 Acesso Rápido</h2>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-          <Link to="/categorias" style={{ textDecoration: 'none', color: 'inherit', padding: '20px', border: '1px solid #eee', borderRadius: '8px', display: 'block', transition: 'transform 0.2s' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '10px' }}>🏷️</div>
-            <h3 style={{ margin: '0 0 10px 0' }}>Categorias</h3>
-            <p style={{ margin: 0, color: '#666' }}>Gerencie as categorias de produtos do seu estoque</p>
+        <div className="feature-grid">
+          <Link to="/categorias" className="feature-card">
+            <div className="icon">🏷️</div>
+            <h3>Categorias</h3>
+            <p>Gerencie as categorias de produtos do seu estoque</p>
           </Link>
-          <Link to="/produtos" style={{ textDecoration: 'none', color: 'inherit', padding: '20px', border: '1px solid #eee', borderRadius: '8px', display: 'block', transition: 'transform 0.2s' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📦</div>
-            <h3 style={{ margin: '0 0 10px 0' }}>Produtos</h3>
-            <p style={{ margin: 0, color: '#666' }}>Cadastre e controle todos os produtos disponíveis</p>
+          <Link to="/produtos" className="feature-card">
+            <div className="icon">📦</div>
+            <h3>Produtos</h3>
+            <p>Cadastre e controle todos os produtos disponíveis</p>
           </Link>
-          <Link to="/movimentacoes" style={{ textDecoration: 'none', color: 'inherit', padding: '20px', border: '1px solid #eee', borderRadius: '8px', display: 'block', transition: 'transform 0.2s' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '10px' }}>🔄</div>
-            <h3 style={{ margin: '0 0 10px 0' }}>Movimentações</h3>
-            <p style={{ margin: 0, color: '#666' }}>Registre entradas e saídas do estoque</p>
+          <Link to="/movimentacoes" className="feature-card">
+            <div className="icon">🔄</div>
+            <h3>Movimentações</h3>
+            <p>Registre entradas e saídas do estoque</p>
           </Link>
-          <Link to="/relatorios" style={{ textDecoration: 'none', color: 'inherit', padding: '20px', border: '1px solid #eee', borderRadius: '8px', display: 'block', transition: 'transform 0.2s' }}>
-            <div style={{ fontSize: '2rem', marginBottom: '10px' }}>📈</div>
-            <h3 style={{ margin: '0 0 10px 0' }}>Relatórios</h3>
-            <p style={{ margin: 0, color: '#666' }}>Visualize balanços e estatísticas detalhadas</p>
+          <Link to="/relatorios" className="feature-card">
+            <div className="icon">📊</div>
+            <h3>Relatórios</h3>
+            <p>Visualize relatórios e análises do seu estoque</p>
           </Link>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -81,85 +81,104 @@ export default function Categorias() {
     setForm({ nome: '', tamanho: '', embalagem: '' });
     setShowModal(true);
   };
-  
-  if (loading) return <div>Carregando...</div>;
+
+  if (loading) {
+    return <div className="loading">Carregando...</div>;
+  }
 
   return (
-    <div>
-      <h2>Categorias</h2>
+    <div className="card">
+      <h2>📁 Categorias</h2>
 
-      {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-      {success && <div style={{ color: 'green', marginBottom: '10px' }}>{success}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
+      {success && <div className="alert alert-success">{success}</div>}
 
-      <button onClick={openNewModal} style={{ marginBottom: '20px' }}>
+      <button className="btn btn-primary" onClick={openNewModal}>
         + Nova Categoria
       </button>
 
-      {showModal && (
-        <div style={{ border: '1px solid #ccc', padding: '20px', marginBottom: '20px', background: '#f9f9f9' }}>
-          <h3>{editingCategoria ? 'Editar Categoria' : 'Nova Categoria'}</h3>
-          <form onSubmit={handleSubmit}>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Nome:</label>
-              <input
-                type="text"
-                value={form.nome}
-                onChange={e => setForm({ ...form, nome: e.target.value })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Tamanho:</label>
-              <input
-                type="text"
-                value={form.tamanho}
-                onChange={e => setForm({ ...form, tamanho: e.target.value })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <div style={{ marginBottom: '10px' }}>
-              <label>Embalagem:</label>
-              <input
-                type="text"
-                value={form.embalagem}
-                onChange={e => setForm({ ...form, embalagem: e.target.value })}
-                required
-                style={{ display: 'block', width: '100%' }}
-              />
-            </div>
-            <button type="submit">Salvar</button>
-            <button type="button" onClick={() => setShowModal(false)} style={{ marginLeft: '10px' }}>Cancelar</button>
-          </form>
+      {categorias.length === 0 ? (
+        <div className="empty-state">
+          <p>Nenhuma categoria cadastrada</p>
         </div>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+              <th>Tamanho</th>
+              <th>Embalagem</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {categorias.map((cat) => (
+              <tr key={cat.id}>
+                <td>{cat.id}</td>
+                <td>{cat.nome}</td>
+                <td>{cat.tamanho}</td>
+                <td>{cat.embalagem}</td>
+                <td>
+                  <div className="btn-group">
+                    <button className="btn btn-warning" onClick={() => handleEdit(cat)}>
+                      Editar
+                    </button>
+                    <button className="btn btn-danger" onClick={() => handleDelete(cat.id!)}>
+                      Remover
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       )}
 
-      <table border={1} cellPadding={10} style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nome</th>
-            <th>Tamanho</th>
-            <th>Embalagem</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categorias.map(categoria => (
-            <tr key={categoria.id}>
-              <td>{categoria.id}</td>
-              <td>{categoria.nome}</td>
-              <td>{categoria.tamanho}</td>
-              <td>{categoria.embalagem}</td>
-              <td>
-                <button onClick={() => handleEdit(categoria)}>Editar</button>
-                <button onClick={() => categoria.id && handleDelete(categoria.id)} style={{ marginLeft: '5px', color: 'red' }}>Excluir</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h3>{editingCategoria ? 'Editar Categoria' : 'Nova Categoria'}</h3>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label>Nome</label>
+                <input
+                  type="text"
+                  value={form.nome}
+                  onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label>Tamanho</label>
+                <input
+                  type="text"
+                  value={form.tamanho}
+                  onChange={(e) => setForm({ ...form, tamanho: e.target.value })}
+                  placeholder="Ex: Grande, Médio, Pequeno"
+                />
+              </div>
+              <div className="form-group">
+                <label>Embalagem</label>
+                <input
+                  type="text"
+                  value={form.embalagem}
+                  onChange={(e) => setForm({ ...form, embalagem: e.target.value })}
+                  placeholder="Ex: Caixa, Saco, Lata"
+                />
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn" onClick={() => setShowModal(false)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn btn-primary">
+                  Salvar
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
