@@ -8,24 +8,30 @@ import Relatorios from './pages/Relatorios';
 function App() {
   return (
     <Router>
-      <div>
-        <nav>
-          <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
-            Dashboard
-          </NavLink>
-          <NavLink to="/categorias" className={({ isActive }) => isActive ? 'active' : ''}>
-            Categorias
-          </NavLink>
-          <NavLink to="/produtos" className={({ isActive }) => isActive ? 'active' : ''}>
-            Produtos
-          </NavLink>
-          <NavLink to="/movimentacoes" className={({ isActive }) => isActive ? 'active' : ''}>
-            Movimentações
-          </NavLink>
-          <NavLink to="/relatorios" className={({ isActive }) => isActive ? 'active' : ''}>
-            Relatórios
-          </NavLink>
-        </nav>
+      <div className="app-container">
+        <header className="navbar">
+          <h1>
+            <span className="logo-icon">📦</span>
+            Estoque
+          </h1>
+          <nav>
+            <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
+              Dashboard
+            </NavLink>
+            <NavLink to="/categorias" className={({ isActive }) => isActive ? 'active' : ''}>
+              Categorias
+            </NavLink>
+            <NavLink to="/produtos" className={({ isActive }) => isActive ? 'active' : ''}>
+              Produtos
+            </NavLink>
+            <NavLink to="/movimentacoes" className={({ isActive }) => isActive ? 'active' : ''}>
+              Movimentações
+            </NavLink>
+            <NavLink to="/relatorios" className={({ isActive }) => isActive ? 'active' : ''}>
+              Relatórios
+            </NavLink>
+          </nav>
+        </header>
 
         <main>
           <Routes>
